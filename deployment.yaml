@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: xdclass-nginx
+  name: xdclass-nginx
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: xdclass-nginx-2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: xdclass-nginx-2
+    spec:
+      containers:
+      - image: nginx:1.23.0
+        name: nginx
+        resources: {}
+status: {}

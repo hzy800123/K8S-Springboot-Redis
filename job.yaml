@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: xdclass-job
+  namespace: dev
+spec:
+  parallelism: 2
+  completions: 3
+  backoffLimit: 5
+  activeDeadlineSeconds: 100
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: demo
+        image: busybox:1.35.0 
+        command: ["echo","hello xdclass.net k8s job"]

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: xdclass-nfs
+  namespace: dev
+  labels: 
+    apps: nginx-nfs
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.20
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: logs-volume
+      mountPath: /var/log/nginx
+  volumes:
+  - name: logs-volume
+    nfs:
+      server: 192.168.1.251  #nfs服务器地址
+      path: /opt/nfsdata #共享文件路径

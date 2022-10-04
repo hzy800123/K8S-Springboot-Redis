@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: k8sdemo
+  name: k8sdemo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: k8sdemo
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: k8sdemo
+    spec:
+      imagePullSecrets:
+        - name: xdclass-docker-secret
+      containers:
+      - image: registry.cn-shenzhen.aliyuncs.com/xdclass-k8sdemo/k8sdemo:1.0
+        name: xdclass-k8s
+        resources: {}
+status: {}

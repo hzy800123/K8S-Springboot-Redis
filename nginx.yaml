@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: xdclass-nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.23.0
+    imagePullPolicy: IfNotPresent
+  nodeSelector:
+    env: test

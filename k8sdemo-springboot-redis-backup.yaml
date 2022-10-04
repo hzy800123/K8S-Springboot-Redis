@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: k8s-springboot-redis
+  name: k8s-springboot-redis
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-springboot-redis
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: k8s-springboot-redis
+    spec:
+      imagePullSecrets:
+      - name: k8s-spring-redis-secret
+      containers:
+      - image: registry.cn-shenzhen.aliyuncs.com/k8s-springboot-redis-dev/k8s-springboot-redis-dev:1.1
+        name: k8s-springboot-redis
+        imagePullPolicy: Always
+        resources: {}
+        env:
+        # Define the environment variable   
+        - name: redisIP
+          valueFrom:   
+            configMapKeyRef:   
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY   
+              name: redis.ip
+              # Specify the key associated with the value   
+              key: redisIP
+        - name: redisPort
+          valueFrom:   
+            configMapKeyRef:   
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY   
+              name: redis.ip
+              # Specify the key associated with the value   
+              key: redisPort
+        - name: redisPassword
+          valueFrom:
+            secretKeyRef:
+              name: redis.password
+              key: password
+              optional: false # same as default; "mysecret" must exist
+                              # and include a key named "password"
+status: {}

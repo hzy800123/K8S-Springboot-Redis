@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis
+  name: redis
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: redis
+    spec:
+      containers:
+      - image: redis:7.0
+        name: redis
+        command: ["redis-server"]
+        args: ["--requirepass password"]
+        volumeMounts:  # 将redis-data-volume挂在到redis容器中，对应的目录为 /data
+        - name: redis-data-volume
+          mountPath: /data
+      volumes: # 这里声明volume存储劵， name为redis-data-volume，类型是hostPath
+      - name: redis-data-volume
+        hostPath:
+          path: /mydata/redis/data
+          type: DirectoryOrCreate #如果给定路径不存在，将根据需要在那里创建一个空目录
+
+        resources: {}
+status: {}
+

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: xdclass-volume-hostpath
+  namespace: dev
+spec:
+  containers:
+  - name: xdclass-nginx
+    image: nginx:1.20
+    ports:
+    - containerPort: 80
+    volumeMounts:  # 将nginx-log-volume挂在到nginx容器中，对应的目录为 /var/log/nginx
+    - name: nginx-log-volume
+      mountPath: /var/log/nginx
+
+  - name: xdclass-busybox
+    image: busybox:1.35.0 
+    command: ["/bin/sh","-c","tail -f /usr/local/test/access.log"] # 容器启动后初始命令，读取指定文件中内容
+    volumeMounts:  # 将nginx-log-volume挂在到busybox容器中，对应的目录为 /logs
+    - name: nginx-log-volume
+      mountPath: /usr/local/test
+
+  volumes: # 这里声明volume存储劵， name为nginx-log-volume，类型是hostPath
+  - name: nginx-log-volume
+    hostPath:
+      path: /usr/local/test
+      type: DirectoryOrCreate #如果给定路径不存在，将根据需要在那里创建一个空目录

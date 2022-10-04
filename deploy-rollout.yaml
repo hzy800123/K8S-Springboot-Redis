@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xdclass-deploy
+  namespace: dev
+spec:
+  replicas: 5
+  revisionHistoryLimit: 5  #保留历史版本5个
+  strategy: 
+    type: RollingUpdate
+  selector: 
+    matchLabels:
+      app: xdclass-nginx-pod
+  template:
+    metadata:
+      labels:
+        app: xdclass-nginx-pod
+    spec:
+      containers:
+      - name: xdclass-nginx
+        image: nginx:1.23.0
